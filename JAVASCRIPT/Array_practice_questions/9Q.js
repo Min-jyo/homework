@@ -4,8 +4,9 @@ let todos = [
   { id: 1, content: 'Javascript', completed: false }
 ];
 
-function countCompletedTodos() {
-  return todos.reduce((pre, cur) => (cur.completed === true ? ++pre : pre), 0);
+function getMaxId() {
+  todos = todos.map(item => item.id);
+  return Math.max(...todos);
 }
 
-console.log(countCompletedTodos());
+console.log(getMaxId()); // 3

@@ -5,13 +5,15 @@ let todos = [
 ];
 
 function removeTodo(id) {
-  for (let i = 0; i < todos.length; i++) {
-    if (todos[i].id === id) {
-      todos.splice(i, 1);
-    }
-  }
+  todos = todos.filter(item => !(item.id === id));
 }
 
 removeTodo(2);
 
 console.log(todos);
+/*
+[
+  { id: 3, content: 'HTML', completed: false },
+  { id: 1, content: 'Javascript', completed: false }
+]
+*/
