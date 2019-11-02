@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <input type="text" class="input-todo" placeholder="Enter todo!">
+    <ul class="todos"></ul>  
+
+    <script>
+      
+      //DOM
+      $input = document.querySelector('.input-todo');
+      $ul = document.querySelector('.todos');
+      
+      
+      
+      
+      // 이벤트
+      $input.onkeyup = function(e) { // 할일 추가 
+        if(e.keyCode !== 13) return;
+        $ul.innerHTML += `<li><label><input type="checkBox"></label>${$input.value}<button class="remove">X</button></li>`;
+        $input.value = '';
+      }
+
+      $ul.onchange = function(e) { // line-through
+        if(e.target.checked){
+          e.target.parentNode.parentNode.style.textDecoration = 'line-through';
+        } else {
+          e.target.parentNode.parentNode.style.textDecoration = 'none';
+        }  
+      }
+
+      $ul.onclick = function(e) { // 요소 삭제 
+        console.log(e.target);
+        console.log(e.target.parentNode);
+
+        $ul.removeChild(e.target.parentNode);
+      }
+
+      
+    </script>
+</body>
+</html>

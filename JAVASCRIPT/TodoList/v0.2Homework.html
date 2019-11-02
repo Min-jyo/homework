@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <input type="text" class="input-todo" placeholder="Enter todo!">
+    <ul class="todos"></ul>
+  
+    <script>
+      
+      //DOM 객체
+      $input = document.querySelector('.input-todo');
+      $todos = document.querySelector('.todos');
+      
+      let todos = []; // 전역 변수 todos
+      
+      const getTodos = function () {
+        // TODO: 서버로부터 todos 데이터를 취득
+        todos = [
+          { id: 1, content: 'HTML', completed: false},
+          { id: 2, content: 'CSS', completed: true },
+          { id: 3, content: 'Javascript', completed: false}
+        ];
+        console.log(todos)
+        render();
+      };
+////////////getTodos에서 호출//////렌더 함수 -> todos.innerHTML에 직접 HTML 넣어줌///////////////// 
+      const render = function () {
+        let html = '';
+
+        todos.forEach(todo => {
+          html += `
+            <li id="${todo.id}" style="${(todo.completed ? "text-decoration: line-through" : "")}">
+              <label>
+                <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+                <span>${todo.content}</span>
+                <button class="remove">X</button>
+              </label>
+            </li>
+          `;
+        })
+        $todos.innerHTML = html;
+      };
+///////////////////렌더 함수 끝////////////////////////////////
+      
+      const addTodo = function (e) { // add 함수 끝
+        const content = $input.value.trim();        
+        if(e.keyCode !== 13 || content === '') return;
+        $input.value = '';
+        todos = todos.length ? [...todos, {id: todos[todos.length-1].id+1, content, completed: false}] : [{id: 1, content, compledted:false}];
+        render();
+        console.log(todos);
+      };
+
+      const lineThrough = function (e) { // checked에따른 todo 변화
+        todos = todos.map(todo => {
+          if(todo.id !== +e.target.parentNode.parentNode.id) {
+            return todo;
+          } else {
+            return ({...todo,completed: e.target.checked});
+          }
+        })
+        render();
+      }
+
+      const removeButton = function (e) { // todo 변경 완료
+        // console.log(e.target.parentNode.parentNode); 
+        if(!e.target.classList.contains('remove')) return;
+
+        console.log(e.target.parentNode.parentNode.id)
+        todos = todos.filter(todo => todo.id !== +e.target.parentNode.parentNode.id)
+        console.log(todos);
+        render();
+      }
+      
+
+
+      // Events 
+      $input.onkeyup = addTodo; // 할일 추가
+      $todos.onchange = lineThrough; // 체크 상태에 따른 취소선 상태 변경 todo 변경
+      $todos.onclick = removeButton;
+      window.onload = getTodos; // window가 로드되면 getTodos를 호출 -> render 호출
+     
+    </script>
+    
+</body>
+</html>
